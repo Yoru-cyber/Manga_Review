@@ -1,0 +1,17 @@
+{% extends "./layouts/centered.html" %} {% block content %}
+<div
+  id="{{manga.id}}"
+  class="flex flex-col items-center justify-center bg-neutral-800 p-5 rounded-lg text-center"
+>
+  <h1 class="text-2xl font-semibold tracking-tight">{{manga.title}}</h1>
+  <h1>{{manga.author}}</h1>
+  <img class="w-35 h-64 rounded-md" src="{{manga.image.url}}" alt="" />
+  <ul id="genres">
+    {% for genre in manga.genres.all %}
+    <li>{{genre}}</li>
+    {% endfor %}
+  </ul>
+  <h1>{{manga.publication_year}}</h1>
+  <h1>{{manga.status}}</h1>
+</div>
+{% endblock %}

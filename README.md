@@ -1,0 +1,3 @@
+# Manga Review
+
+No expectations.
