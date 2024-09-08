@@ -21,13 +21,11 @@
   <body class="font-['Inter'] bg-neutral-900 text-zinc-200">
       {% if messages %}
   {% for message in messages %}
- 
   <script>
     alert("{{ message }}");
   </script>
- 
   {% endfor %}
-  {% endif %}
+  {% endif %} 
     {% include "./navbar.html" %} {% block layout %} {% endblock %}
   </body>
 </html>
