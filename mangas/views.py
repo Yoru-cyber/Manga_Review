@@ -5,14 +5,16 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
-from .models import Manga
+from django.utils import timezone
+from django.contrib.auth.decorators import login_required
+from .models import Manga, Review
 
 
 def index(request):
     try:
-        mangas = Manga.objects.all()
-    except Manga.DoesNotExist:
-        raise Http404("Question does not exist")
+        mangas = Manga.objects.all().order_by("-id")[:10]
+    except Exception:
+        raise Http404("Something went wrong")
     context = {"mangas": mangas}
     return render(template_name="mangas/index.html", request=request, context=context)
 
@@ -23,7 +25,15 @@ def details(request, manga_id: int):
         manga = Manga.objects.get(pk=manga_id)
     except Manga.DoesNotExist:
         raise Http404("Question does not exist")
-    context = {"manga": manga}
+    try:
+        reviews = manga.review_set.all()
+    except Review.DoesNotExist:
+        reviews = []
+
+    manga_genres_str = ", ".join(manga.genres.all().values_list("name", flat=True))
+
+    print(manga_genres_str)
+    context = {"manga": manga, "reviews": reviews, "genres": manga_genres_str}
     return render(template_name="mangas/details.html", request=request, context=context)
 
 
@@ -37,6 +47,9 @@ def loginUser(request: HttpRequest):
         user = authenticate(request=request, username=username, password=password)
         if user is not None:
             login(request=request, user=user)
+            next_url = request.GET.get("next")
+            if next_url:
+                return redirect(next_url)
             return redirect("index")
         else:
             messages.error(request, "Usuario o contraseña incorrecta")
@@ -60,3 +73,32 @@ def signup(request: HttpRequest):
             return redirect("index")
     context = {"form": form}
     return render(template_name="mangas/signup.html", request=request, context=context)
+
+
+@login_required()
+def createReview(request: HttpRequest, manga_id: int):
+    review = None
+    user_id = request.user.id
+    try:
+        manga = Manga.objects.get(pk=manga_id)
+    except Manga.DoesNotExist:
+        manga = None
+    try:
+        review = manga.review_set.get(user=user_id)
+    except Review.DoesNotExist:
+        review = None
+    if request.method == "POST":
+        date = timezone.now()
+        user_review = request.POST.get("review")
+        try:
+            user = User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            user = None
+        Review.objects.update_or_create(
+            user=user, manga=manga, defaults={"date": date, "review": user_review}
+        )
+        return redirect(request.META["HTTP_REFERER"])
+    context = {"review": review}
+    return render(
+        template_name="mangas/create_review.html", request=request, context=context
+    )

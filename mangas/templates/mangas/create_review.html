@@ -1,0 +1,28 @@
+{% extends "./layouts/centered.html" %}
+{% block content %}
+  <div class="flex flex-col w-full lg:w-2/3 lg:h-fit h-5/6  bg-neutral-800 rounded-lg p-5">
+    <form action="" method="post">
+      {% csrf_token %}
+      <ul class="flex flex-col p-5 place-items-baseline">
+        <li class="flex flex-col w-full p-2">
+          <label class="text-xl">Escribe tu opinión (^˵◕ω◕˵^)</label>
+          {% if review %}
+            <textarea name="review"
+                      id="review"
+                      class="h-36 w-full bg-neutral-700 text-zinc-50 p-2 rounded-lg">{{review.review}}</textarea>
+            <p>Última edición. <i>{{ review.date }}</i></p>
+          {% else %}
+            <textarea name="review"
+                      id="review"
+                      class="h-36 w-full bg-neutral-700 text-zinc-50 p-2 rounded-lg"></textarea>
+          {% endif %}
+        </li>
+        <li class="mt-5 self-center">
+          <input type="submit"
+                 class="button p-2 bg-blue-800 rounded-lg transform hover:bg-blue-900 duration-300 cursor-pointer"
+                 value="Guardar" />
+        </li>
+      </ul>
+    </form>
+  </div>
+{% endblock content %}

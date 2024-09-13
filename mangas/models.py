@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Manga(models.Model):
     title = models.CharField(max_length=200)
@@ -26,6 +26,15 @@ class Genre(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    manga = models.ForeignKey(Manga, on_delete=models.CASCADE)
+    date = models.DateField()
+    review = models.TextField()
+
+    def __str__(self):
+        return f'{self.user} {self.manga} {self.date}'
 
 
 # Create your models here.

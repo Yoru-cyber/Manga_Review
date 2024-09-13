@@ -1,50 +1,28 @@
-{% extends "./layouts/centered.html" %} {% block content %}
-<form action="" method="POST" class="bg-neutral-800 rounded-lg p-5">
-  {% csrf_token %} {{form.as_p}}
-  <input
-    type="submit"
-    class="button p-2 bg-blue-800 rounded-lg transform hover:bg-blue-900 duration-300 cursor-pointer"
-    value="Registrarte"
-  />
-</form>
-{%endblock%} {% comment %}
+{% extends "./layouts/centered.html" %}
+{% block content %}
+  <form action="" method="post" class="bg-neutral-800 rounded-lg p-5">
+    {% csrf_token %} {{ form.as_p }}
+    <input type="submit"
+           class="button p-2 bg-blue-800 rounded-lg transform hover:bg-blue-900 duration-300 cursor-pointer"
+           value="Registrarte" />
+  </form>
+{% endblock content %}
+{% comment %}
 <ul class="flex flex-col justify-center items-center p-5 place-items-baseline">
   <li class="flex flex-col p-2">
     <label for="firstname" class="w-fit">Nombre </label>
-    <input
-      type="text"
-      name="firstname"
-      placeholder="John"
-      class="col-span-3"
-      required
-    />
+    <input type="text" name="firstname" placeholder="John" class="col-span-3" required />
   </li>
   <li class="flex flex-col p-2">
     <label for="email">Email </label>
-    <input
-      type="email"
-      name="email"
-      class="col-span-3"
-      placeholder="John@example.com"
-      required
-    />
+    <input type="email" name="email" class="col-span-3" placeholder="John@example.com" required />
   </li>
   <li class="flex flex-col p-2">
     <label for="password">Contraseña </label>
-    <input
-      type="password"
-      name="password"
-      placeholder="1234"
-      class="col-span-3 w-fit"
-      required
-    />
+    <input type="password" name="password" placeholder="1234" class="col-span-3 w-fit" required />
   </li>
   <li class="mt-5">
-    <input
-      type="submit"
-      class="button p-2 bg-blue-800 rounded-lg transform hover:bg-blue-900 duration-300 cursor-pointer"
-      value="Registrarte"
-    />
+    <input type="submit" class="button p-2 bg-blue-800 rounded-lg transform hover:bg-blue-900 duration-300 cursor-pointer" value="Registrarte" />
   </li>
 </ul>
 {% endcomment %}

@@ -8,4 +8,5 @@ urlpatterns = [
     path("login/", views.loginUser, name="login"),
     path("user/logout/", views.logoutUser, name="logout"),
     path("signup/", views.signup, name="signup"),
+    path("<int:manga_id>/user/review/", views.createReview, name="createReview"),
 ]
