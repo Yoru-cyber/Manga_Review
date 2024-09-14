@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
-from .models import Manga, Review
+from .models import Anime, Manga, Review
 
 
 def index(request):
@@ -16,7 +16,9 @@ def index(request):
     except Exception:
         raise Http404("Something went wrong")
     context = {"mangas": mangas}
-    return render(template_name="mangas/index.html", request=request, context=context)
+    return render(
+        template_name="mangas/mangas/index.html", request=request, context=context
+    )
 
 
 # Create your views here.
@@ -29,12 +31,11 @@ def details(request, manga_id: int):
         reviews = manga.review_set.all()
     except Review.DoesNotExist:
         reviews = []
-
     manga_genres_str = ", ".join(manga.genres.all().values_list("name", flat=True))
-
-    print(manga_genres_str)
     context = {"manga": manga, "reviews": reviews, "genres": manga_genres_str}
-    return render(template_name="mangas/details.html", request=request, context=context)
+    return render(
+        template_name="mangas/mangas/details.html", request=request, context=context
+    )
 
 
 def loginUser(request: HttpRequest):
@@ -100,5 +101,35 @@ def createReview(request: HttpRequest, manga_id: int):
         return redirect(request.META["HTTP_REFERER"])
     context = {"review": review}
     return render(
-        template_name="mangas/create_review.html", request=request, context=context
+        template_name="mangas/mangas/create_review.html",
+        request=request,
+        context=context,
+    )
+
+
+def animeIndex(request):
+    try:
+        animes = Anime.objects.all().order_by("-id")[:10]
+    except Exception:
+        raise Http404("Something went wrong")
+    context = {"animes": animes}
+    return render(
+        template_name="mangas/anime/index.html", request=request, context=context
+    )
+
+
+def animeDetails(request, anime_id: int):
+    try:
+        anime = Anime.objects.get(pk=anime_id)
+    except Anime.DoesNotExist:
+        raise Http404("Question does not exist")
+    # try:
+    #     reviews = anime.review_set.all()
+    # except Review.DoesNotExist:
+    #     reviews = []
+
+    anime_genres_str = ", ".join(anime.genres.all().values_list("name", flat=True))
+    context = {"anime": anime, "reviews": [], "genres": anime_genres_str}
+    return render(
+        template_name="mangas/anime/details.html", request=request, context=context
     )

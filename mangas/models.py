@@ -36,5 +36,23 @@ class Review(models.Model):
     def __str__(self):
         return f'{self.user} {self.manga} {self.date}'
 
+class Anime(models.Model):
+    title = models.CharField(max_length=200)
+    studio = models.CharField(max_length=200)
+    description = models.TextField()
+    image = models.ImageField(upload_to="animes_images/", null=True, blank=True)
+    genres = models.ManyToManyField("Genre")
+    publication_year = models.PositiveIntegerField()
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ("Activo", "Activo"),
+            ("Completado", "Completado"),
+            ("Hiatus", "Hiatus"),
+        ],
+    )
+
+    def __str__(self):
+        return f"{self.title} {self.studio} {self.publication_year}, {self.genres}"
 
 # Create your models here.

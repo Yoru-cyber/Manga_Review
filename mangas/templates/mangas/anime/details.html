@@ -1,25 +1,25 @@
-{% extends "./layouts/centered.html" %}
+{% extends "../layouts/centered.html" %}
 {% block content %}
   <div name="main_content"
        class="flex flex-row flex-wrap h-full items-center lg:space-x-5 sm:space-y-5">
     <div name="card"
          class="flex flex-row items-center h-fit justify-center flex-wrap bg-neutral-800 p-1 rounded-md">
-      <div id="{{ manga.id }}"
+      <div id="{{ anime.id }}"
            class="flex flex-col flex-wrap items-center justify-center p-5 rounded-lg text-center">
-        <h1 class="text-2xl font-semibold tracking-tight">{{ manga.title }}</h1>
-        <h1>{{ manga.author }}</h1>
-        <img class="w-35 h-64 rounded-md" src="{{ manga.image.url }}" alt="" />
-        <h1>{{ manga.publication_year }}</h1>
-        <h1>{{ manga.status }}</h1>
+        <h1 class="text-2xl font-semibold tracking-tight">{{ anime.title }}</h1>
+        <h1>{{ anime.author }}</h1>
+        <img class="w-35 h-64 rounded-md" src="{{ anime.image.url }}" alt="" />
+        <h1>{{ anime.publication_year }}</h1>
+        <h1>{{ anime.status }}</h1>
         {% if request.user.is_authenticated %}
-          <a href="{% url 'createReview' manga_id=manga.id %}"
+          <a href="#"
              class="bg-blue-800 text-zinc-100 rounded-lg w-fit self-center p-2 hover:cursor-pointer">Escribe una review</a>
         {% else %}
         {% endif %}
       </div>
       <div class="flex flex-col w-96 h-96 self-start divide-y divide-neutral-500 space-y-2">
         <h2>Sinopsis</h2>
-        <p class="text-balance text-sm whitespace-normal">{{ manga.description }}</p>
+        <p class="text-balance text-sm whitespace-normal">{{ anime.description }}</p>
         <p id="genres" class="mb-5">Géneros: {{ genres }}</p>
       </div>
     </div>
